@@ -5,4 +5,5 @@ dependencies:
   - python=3*
   - pip
   - pip:
-    - git+git://github.com/elcorto/imagecluster.git
+    - git+https://github.com/elcorto/imagecluster.git
+    - pyinstaller
