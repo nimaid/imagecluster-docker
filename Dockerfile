@@ -1,4 +1,4 @@
-FROM nimaid/cuda-jupyterlab
+FROM nimaid/jupyterlab
 
 RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     PIP_INSTALL="python3 -m pip install --upgrade --no-cache-dir --retries 10 --timeout 60" && \
@@ -6,16 +6,25 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     
     apt-get update && \
     
-    # Install imagecluster library with GPU support (hopefully, I don't actually know what I'm doing)
+    # Install imagecluster library
     $APT_INSTALL python3-dev && \
-    cd /root/ && \
+    cd /tmp/ && \
     $GIT_CLONE https://github.com/elcorto/imagecluster.git && \
     cd imagecluster/ && \
-    sed -i '/tensorflow/c\tensorflow-gpu' requirements.txt && \
-    pip3 install -e . && \
+    #sed -i '/tensorflow/c\tensorflow-gpu' requirements.txt && \
+    pip3 install . && \
     
     # Clean up
     ldconfig && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* /tmp/* ~/*
+
+# Pre-download the model weights
+RUN mkdir -p /root/.keras/models/ && \
+    cd /root/.keras/models/ && \
+    wget https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels.h5 && \
+
+# Copy wrapper script
+COPY cluster_images.py /usr/local/bin/cluster_images
+RUN chmod +x /usr/local/bin/cluster_images
