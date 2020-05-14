@@ -1,0 +1,8 @@
+name: imagecluster
+channels:
+  - defaults
+dependencies:
+  - python=3*
+  - pip
+  - pip:
+    - git+git://github.com/elcorto/imagecluster.git

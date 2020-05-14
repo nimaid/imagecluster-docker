@@ -29,47 +29,50 @@ with warnings.catch_warnings():
 import os
 import shutil
 
-def main():
-    clusters_path = os.path.join(IMAGE_PATH, icio.ic_base_dir, 'clusters')
+#def main():
+clusters_path = os.path.join(IMAGE_PATH, icio.ic_base_dir, 'clusters')
 
-    # The bottleneck is calc.fingerprints() called in this function, all other
-    # operations are very fast. get_image_data() writes fingerprints to disk and
-    # loads them again instead of re-calculating them.
-    print('\nFingerprinting images...\n')
-    images,fingerprints,timestamps = icio.get_image_data(IMAGE_PATH)
-    print('\nImage fingerprinting done.\n')
+# The bottleneck is calc.fingerprints() called in this function, all other
+# operations are very fast. get_image_data() writes fingerprints to disk and
+# loads them again instead of re-calculating them.
+print('\nFingerprinting images...\n')
+images,fingerprints,timestamps = icio.get_image_data(IMAGE_PATH)
+print('\nImage fingerprinting done.\n')
 
-    # Run clustering on the fingerprints. Select clusters with similarity index
-    print('\nClustering images...\n')
-    clusters = calc.cluster(fingerprints, sim=SIMILARITY)
-    print('\nClustering done.\n')
+# Run clustering on the fingerprints. Select clusters with similarity index
+print('\nClustering images...\n')
+clusters = calc.cluster(fingerprints, sim=SIMILARITY)
+print('\nClustering done.\n')
 
-    # Re-format clusters into a simple 2D list
-    simple_clusters = list()
-    for i, (num_in_cluster, cluster_list) in enumerate(clusters.items()):
-        for cluster in cluster_list:
-            simple_clusters.append(cluster)
-    
+# Re-format clusters into a simple 2D list
+simple_clusters = list()
+for i, (num_in_cluster, cluster_list) in enumerate(clusters.items()):
+    for cluster in cluster_list:
+        simple_clusters.append(cluster)
+
+if ACTION == 'copy':
     print('\nCopying images to clusters...\n')
-    
-    # Remove existing clusters (if present)
-    if os.path.exists(clusters_path):
-        shutil.rmtree(clusters_path)
-    
-    # Move images into cluster folders
-    cluster_dir_length = len(str(len(simple_clusters)))
-    for i, cluster in enumerate(simple_clusters):
-        cluster_name = str(i).zfill(cluster_dir_length)
-        cluster_dir = os.path.join(clusters_path, cluster_name)
-        
-        os.makedirs(cluster_dir)
-        for image in cluster:
-            if ACTION == 'copy':
-                shutil.copy(os.path.abspath(image), cluster_dir)
-            elif ACTION == 'move':
-                shutil.move(os.path.abspath(image), cluster_dir)
-        
-    print('\nAll done!\n')
+elif ACTION == 'move':
+    print('\nMoving images to clusters...\n')
 
-if __name__ == "__main__":
-    main()
+# Remove existing clusters (if present)
+if os.path.exists(clusters_path):
+    shutil.rmtree(clusters_path)
+
+# Move images into cluster folders
+cluster_dir_length = len(str(len(simple_clusters)))
+for i, cluster in enumerate(simple_clusters):
+    cluster_name = str(i).zfill(cluster_dir_length)
+    cluster_dir = os.path.join(clusters_path, cluster_name)
+    
+    os.makedirs(cluster_dir)
+    for image in cluster:
+        if ACTION == 'copy':
+            shutil.copy(os.path.abspath(image), cluster_dir)
+        elif ACTION == 'move':
+            shutil.move(os.path.abspath(image), cluster_dir)
+    
+print('\nAll done!\n')
+
+#if __name__ == "__main__":
+#    main()

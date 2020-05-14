@@ -8,11 +8,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     
     # Install imagecluster library
     $APT_INSTALL python3-dev && \
-    cd /tmp/ && \
-    $GIT_CLONE https://github.com/elcorto/imagecluster.git && \
-    cd imagecluster/ && \
-    #sed -i '/tensorflow/c\tensorflow-gpu' requirements.txt && \
-    pip3 install . && \
+    PIP_INSTALL git+git://github.com/elcorto/imagecluster.git && \
     
     # Clean up
     ldconfig && \
