@@ -41,7 +41,7 @@ def main():
 
     # Run clustering on the fingerprints. Select clusters with similarity index
     print('\nClustering images...\n')
-    clusters = calc.cluster(fingerprints, sim=SIMILARITY
+    clusters = calc.cluster(fingerprints, sim=SIMILARITY)
     print('\nClustering done.\n')
 
     # Re-format clusters into a simple 2D list
@@ -64,9 +64,9 @@ def main():
         
         os.makedirs(cluster_dir)
         for image in cluster:
-            if ACTION = 'copy':
+            if ACTION == 'copy':
                 shutil.copy(os.path.abspath(image), cluster_dir)
-            elif ACTION = 'move':
+            elif ACTION == 'move':
                 shutil.move(os.path.abspath(image), cluster_dir)
         
     print('\nAll done!\n')
