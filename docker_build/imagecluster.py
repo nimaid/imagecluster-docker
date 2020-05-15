@@ -13,7 +13,7 @@ parser.add_argument("-a", "--action", type=str, required=False, choices = ['copy
 
 args = parser.parse_args()
 
-IMAGE_PATH = args.image_dir
+IMAGE_PATH = args.image_dir.replace('\\', '/')
 if args.similarity <= 0.0 or args.similarity > 1.0:
     raise ValueError('Similarity percentage must be greater than 0.0 and less than or equal to 1.0')
 SIMILARITY = args.similarity
@@ -87,7 +87,7 @@ def main():
             shutil.move(os.path.abspath(image), clusters_path)
         
     print('\nAll done!')
-    print('Clustered images can be found in ' + os.path.abspath(clusters_path) + '\n')
+    print('Clustered images can be found in ' + clusters_path + '\n')
 
 if __name__ == "__main__":
     main()
