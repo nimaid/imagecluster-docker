@@ -86,7 +86,8 @@ def main():
         elif ACTION == 'move':
             shutil.move(os.path.abspath(image), clusters_path)
         
-    print('\nAll done!\n')
+    print('\nAll done!')
+    print('Clustered images can be found in ' + os.path.abspath(clusters_path) + '\n')
 
 if __name__ == "__main__":
     main()
