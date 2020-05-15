@@ -22,5 +22,5 @@ RUN mkdir -p /root/.keras/models/ && \
     wget https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels.h5
 
 # Copy wrapper script
-COPY cluster_images.py /usr/local/bin/cluster_images
-RUN chmod +x /usr/local/bin/cluster_images
+COPY imagecluster.py /usr/local/bin/imagecluster
+RUN chmod +x /usr/local/bin/imagecluster
