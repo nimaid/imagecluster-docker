@@ -1,5 +1,6 @@
 FROM ubuntu
 
+# Install requirements
 RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     PIP_INSTALL="python3 -m pip install --upgrade --no-cache-dir --retries 10 --timeout 60" && \
     GIT_CLONE="git clone --depth 10" && \
