@@ -22,7 +22,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     # Clean up
     ldconfig && \
     apt-get clean && \
-    apt-get autoremove && \
+    apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* ~/*
 
 # Copy wrapper script

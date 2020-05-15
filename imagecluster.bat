@@ -1,2 +1,2 @@
 @echo off
-docker run -it -v %~dp0\data:/root/data nimaid/imagecluster imagecluster %*
+docker run -it --rm -v %~dp0\data:/root/data nimaid/imagecluster imagecluster %*
