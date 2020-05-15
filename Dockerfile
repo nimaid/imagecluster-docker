@@ -8,7 +8,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     
     # Install imagecluster library
     $APT_INSTALL python3-dev && \
-    PIP_INSTALL git+git://github.com/elcorto/imagecluster.git && \
+    $PIP_INSTALL git+git://github.com/elcorto/imagecluster.git && \
     
     # Clean up
     ldconfig && \

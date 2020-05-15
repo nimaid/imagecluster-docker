@@ -50,6 +50,13 @@ for i, (num_in_cluster, cluster_list) in enumerate(clusters.items()):
     for cluster in cluster_list:
         simple_clusters.append(cluster)
 
+# Find unclustered images
+unclustered_images = set(images.keys()) # Start set with all images
+for cluster in simple_clusters:
+    for image in cluster:
+        unclustered_images = unclustered_images.difference(set([image]))
+unclustered_images = list(unclustered_images) # Convert to list
+
 if ACTION == 'copy':
     print('\nCopying images to clusters...\n')
 elif ACTION == 'move':
@@ -71,6 +78,13 @@ for i, cluster in enumerate(simple_clusters):
             shutil.copy(os.path.abspath(image), cluster_dir)
         elif ACTION == 'move':
             shutil.move(os.path.abspath(image), cluster_dir)
+
+# Move unclustered images too
+for i, image in enumerate(unclustered_images):
+    if ACTION == 'copy':
+        shutil.copy(os.path.abspath(image), clusters_path)
+    elif ACTION == 'move':
+        shutil.move(os.path.abspath(image), clusters_path)
     
 print('\nAll done!\n')
 

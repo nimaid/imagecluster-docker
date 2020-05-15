@@ -1,4 +1,4 @@
-name: imagecluster
+name: imagecluster_build
 channels:
   - defaults
 dependencies:
