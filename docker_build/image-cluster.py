@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 
-# Parse arguments before importing any other modules
+# Import basic libraries
 import argparse
+import os
+import sys
+import shutil
+
+# Parse arguments before importing imagecluster
 parser = argparse.ArgumentParser(description='Groups images together based on similarity (image clustering)')
 
 parser.add_argument("-i", "--image_dir", type=str, required=True,
@@ -13,11 +18,18 @@ parser.add_argument("-a", "--action", type=str, required=False, choices = ['copy
 
 args = parser.parse_args()
 
-IMAGE_PATH = args.image_dir.replace('\\', '/')
+IMAGE_PATH = os.path.normpath(args.image_dir)
 if args.similarity <= 0.0 or args.similarity > 1.0:
     raise ValueError('Similarity percentage must be greater than 0.0 and less than or equal to 1.0')
 SIMILARITY = args.similarity
 ACTION = args.action
+
+# Hide TensorFlow's nonsense
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+# Temporarily hide errors while importing to hide "Using Tensorflow backend"
+stderr = sys.stderr
+sys.stderr = open(os.devnull, 'w')
 
 # Import imagecluster and hide Keras FutureWarnings
 import warnings  
@@ -25,9 +37,8 @@ with warnings.catch_warnings():
     warnings.filterwarnings("ignore",category=FutureWarning)
     from imagecluster import calc, io as icio, postproc
 
-# Import remaining modules
-import os
-import shutil
+# Show errors again
+sys.stderr = stderr
 
 def main():
     clusters_path = os.path.join(IMAGE_PATH, icio.ic_base_dir, 'clusters')

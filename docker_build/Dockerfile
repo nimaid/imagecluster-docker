@@ -26,7 +26,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     rm -rf /var/lib/apt/lists/* /tmp/* ~/*
 
 # Copy wrapper script
-COPY imagecluster.py /usr/local/bin/imagecluster
+COPY image-cluster.py /usr/local/bin/imagecluster
 RUN chmod +x /usr/local/bin/imagecluster
 
 ENV SHELL bash
