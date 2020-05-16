@@ -1,0 +1,9 @@
+name: imagecluster_build
+channels:
+  - defaults
+dependencies:
+  - python=3*
+  - pip
+  - pip:
+    - git+https://github.com/elcorto/imagecluster.git
+    - pyinstaller
