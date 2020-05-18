@@ -15,6 +15,8 @@ parser.add_argument("-s", "--similarity", type=float, required=False, default=0.
     help="the percent similarity needed to cluster together (0.0 - 1.0]")
 parser.add_argument("-a", "--action", type=str, required=False, choices = ['copy', 'move'], default='copy',
     help="whether the program will copy the images or move them")
+parser.add_argument("-d", "--debug", required=False, action='store_true', 
+    help="if included, will print debugging output")
 
 args = parser.parse_args()
 
@@ -23,22 +25,26 @@ if args.similarity <= 0.0 or args.similarity > 1.0:
     raise ValueError('Similarity percentage must be greater than 0.0 and less than or equal to 1.0')
 SIMILARITY = args.similarity
 ACTION = args.action
+DEBUG = args.debug
 
 # Hide TensorFlow's nonsense
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-# Temporarily hide errors while importing to hide "Using Tensorflow backend"
-stderr = sys.stderr
-sys.stderr = open(os.devnull, 'w')
+if not DEBUG:
+    # Temporarily hide errors while importing to hide "Using Tensorflow backend"
+    stderr = sys.stderr
+    sys.stderr = open(os.devnull, 'w')
 
-# Import imagecluster and hide Keras FutureWarnings
-import warnings  
-with warnings.catch_warnings():  
-    warnings.filterwarnings("ignore",category=FutureWarning)
+    # Import imagecluster and hide Keras FutureWarnings
+    import warnings  
+    with warnings.catch_warnings():  
+        warnings.filterwarnings("ignore",category=FutureWarning)
+        from imagecluster import calc, io as icio, postproc
+    
+    # Show errors again
+    sys.stderr = stderr
+else: 
     from imagecluster import calc, io as icio, postproc
-
-# Show errors again
-sys.stderr = stderr
 
 def main():
     clusters_path = os.path.join(IMAGE_PATH, icio.ic_base_dir, 'clusters')
