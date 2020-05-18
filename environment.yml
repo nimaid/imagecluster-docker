@@ -7,3 +7,4 @@ dependencies:
   - pip:
     - git+https://github.com/elcorto/imagecluster.git
     - pyinstaller
+    - setuptools<45.0.0
